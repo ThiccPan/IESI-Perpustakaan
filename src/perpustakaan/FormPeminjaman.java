@@ -1,8 +1,10 @@
 package perpustakaan;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class FormPeminjaman extends javax.swing.JFrame{
     private JTextField judulBuku;
@@ -19,7 +21,7 @@ public class FormPeminjaman extends javax.swing.JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 String judulBukuPinjam = judulBuku.getText();
-                System.out.println(judulBukuPinjam);
+                Perpustakaan.controllerPeminjaman.cariBuku(judulBukuPinjam);
             }
         });
     }
@@ -30,7 +32,7 @@ public class FormPeminjaman extends javax.swing.JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
-        setSize(400, 500);
+        this.pack();
     }
 
     public static void main(String[] args) {
@@ -38,4 +40,15 @@ public class FormPeminjaman extends javax.swing.JFrame{
     }
 
 
+    public void display(ArrayList<Buku> bukuList) {
+        Object[] kolom = { "Judul" };
+        DefaultTableModel model = new DefaultTableModel(kolom, 0);
+
+        for(Buku buku : bukuList) {
+            Object[] baris = { buku.judul };
+            model.addRow(baris);
+        }
+
+        daftarBuku.setModel(model);
+    }
 }
