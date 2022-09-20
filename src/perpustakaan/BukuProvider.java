@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class BukuProvider {
     
     private ArrayList<Buku> bukuCollection;
-    private ArrayList<Buku> bukuMatchCollection;
-
     public BukuProvider() {
         bukuCollection = new ArrayList<>();
         bukuCollection.add(new Buku("Sherlock Holmes"));
