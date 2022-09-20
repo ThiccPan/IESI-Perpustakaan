@@ -17,6 +17,8 @@ public class FormPeminjaman extends javax.swing.JFrame{
     private JTable daftarPinjaman;
     private JPanel PeminjamanPanel;
     private JButton konfirmasiButton;
+    private JSpinner lama;
+    ArrayList<BukuDipinjam> bukuDipinjamCollection;
 
     public FormPeminjaman() {
         cariButton.addActionListener(new ActionListener() {
@@ -28,7 +30,8 @@ public class FormPeminjaman extends javax.swing.JFrame{
         });
         daftarBuku.setCellSelectionEnabled(true);
         ListSelectionModel bukuTerpilih = daftarBuku.getSelectionModel();
-        bukuTerpilih.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        bukuTerpilih.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
         bukuTerpilih.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -46,12 +49,22 @@ public class FormPeminjaman extends javax.swing.JFrame{
                 System.out.println("Judul buku yang dipilih" + judulBukuAkanDitambah);
             }
         });
+
+        // TODO: 21/09/2022 finish this method
+        pinjamButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Buku bukuDitambahkan;
+                int lamaPinjam = (Integer) lama.getValue();
+//                tambahBuku(bukuDitambahkan,lamaPinjam);
+            }
+        });
     }
 
     public void tampilkan() {
         setContentPane(PeminjamanPanel);
         setTitle("Form Peminjaman");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
         setLocationRelativeTo(null);
         this.pack();
@@ -72,5 +85,37 @@ public class FormPeminjaman extends javax.swing.JFrame{
         }
 
         daftarBuku.setModel(model);
+    }
+
+    // TODO: 21/09/2022 implement and test this method
+    public void tambahBuku(Buku buku, int lama) {
+        if (lama > 3) {
+            DialogUI dialogUI = new DialogUI("Lama peminjaman melebihi batas maksimal (3 hari)");
+            dialogUI.pack();
+            dialogUI.setLocationRelativeTo(null);
+            dialogUI.setVisible(true);
+        } else {
+            BukuDipinjam bukuDipinjam;
+            bukuDipinjam = new BukuDipinjam(buku.judul,lama);
+            bukuDipinjamCollection.add(bukuDipinjam);
+        }
+    }
+
+    // TODO: 21/09/2022 implement and test this method
+    public void tampilPinjaman() {
+        Object[] kolom = { "Judul" };
+        DefaultTableModel model = new DefaultTableModel(kolom, 0);
+
+        for (BukuDipinjam buku : bukuDipinjamCollection) {
+            Object[] baris = { buku.judul, buku.lama };
+            model.addRow(baris);
+        }
+
+        daftarBuku.setModel(model);
+    }
+
+    // TODO: 21/09/2022 finish this method
+    public void hapusBuku(Buku buku) {
+
     }
 }
