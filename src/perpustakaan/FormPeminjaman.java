@@ -38,25 +38,6 @@ public class FormPeminjaman extends javax.swing.JFrame{
             }
         });
 
-        modelBukuTerpilih.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                ArrayList<String> judulBukuAkanDitambah = new ArrayList<>();
-                int[] rows = daftarBuku.getSelectedRows();
-                int[] columns = daftarBuku.getSelectedColumns();
-                for (int row : rows) {
-                    for (int column : columns) {
-                        String judulBukuTerpilih = (String) daftarBuku.getValueAt(row, column);
-                        if (judulBukuTerpilih != null) {
-                            judulBukuAkanDitambah.add(judulBukuTerpilih);
-                        }
-                    }
-                }
-                System.out.println("Judul buku yang dipilih" + judulBukuAkanDitambah);
-            }
-        });
-
-        // TODO: 21/09/2022 finish this method
         pinjamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
