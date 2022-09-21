@@ -4,9 +4,11 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FormPeminjaman extends javax.swing.JFrame{
     private JTextField judulBuku;
@@ -19,8 +21,15 @@ public class FormPeminjaman extends javax.swing.JFrame{
     private JButton konfirmasiButton;
     private JSpinner lama;
     ArrayList<BukuDipinjam> bukuDipinjamCollection;
+    ArrayList<Buku> bukuTersediaCollection;
 
     public FormPeminjaman() {
+        bukuDipinjamCollection = new ArrayList<>();
+
+        daftarBuku.setCellSelectionEnabled(true);
+        ListSelectionModel modelBukuTerpilih = daftarBuku.getSelectionModel();
+        modelBukuTerpilih.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
         cariButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -28,11 +37,8 @@ public class FormPeminjaman extends javax.swing.JFrame{
                 Perpustakaan.controllerPeminjaman.cariBuku(judulBukuPinjam);
             }
         });
-        daftarBuku.setCellSelectionEnabled(true);
-        ListSelectionModel bukuTerpilih = daftarBuku.getSelectionModel();
-        bukuTerpilih.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        bukuTerpilih.addListSelectionListener(new ListSelectionListener() {
+        modelBukuTerpilih.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 ArrayList<String> judulBukuAkanDitambah = new ArrayList<>();
@@ -54,9 +60,32 @@ public class FormPeminjaman extends javax.swing.JFrame{
         pinjamButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Buku bukuDitambahkan;
-                int lamaPinjam = (Integer) lama.getValue();
-//                tambahBuku(bukuDitambahkan,lamaPinjam);
+                //ambil value lama pinjam
+                int lamaPinjam = (int) lama.getValue();
+
+                //ambil value buku terpilih
+                int rowBukuTerpilih = daftarBuku.getSelectedRow();
+                int colBukuTerpilih = daftarBuku.getSelectedColumn();
+                String judulBukuTerpilih = (String) daftarBuku.getValueAt(rowBukuTerpilih,colBukuTerpilih);
+                Buku bukuTerpilih = null;
+                for (Buku bukuTersedia : bukuTersediaCollection) {
+                    if (Objects.equals(bukuTersedia.judul, judulBukuTerpilih)) {
+                        bukuTerpilih = bukuTersedia;
+                    }
+                }
+
+                //cek value lama pinjam dan tambah jika sesuai
+                try {
+                    tambahBuku(bukuTerpilih,lamaPinjam);
+                } catch (NullPointerException np) {
+                    DialogUI dialogUI = new DialogUI("Buku tidak terdaftar");
+                    dialogUI.pack();
+                    dialogUI.setLocationRelativeTo(null);
+                    dialogUI.setVisible(true);
+                }
+
+                //tambahkan ke daftarBukuTerpinjam
+                tampilPinjaman();
             }
         });
     }
@@ -72,10 +101,12 @@ public class FormPeminjaman extends javax.swing.JFrame{
 
     public static void main(String[] args) {
         FormPeminjaman peminjamanform = new FormPeminjaman();
+        peminjamanform.tampilkan();
     }
 
 
     public void display(ArrayList<Buku> bukuList) {
+        bukuTersediaCollection = bukuList;
         Object[] kolom = { "Judul" };
         DefaultTableModel model = new DefaultTableModel(kolom, 0);
 
@@ -87,7 +118,6 @@ public class FormPeminjaman extends javax.swing.JFrame{
         daftarBuku.setModel(model);
     }
 
-    // TODO: 21/09/2022 implement and test this method
     public void tambahBuku(Buku buku, int lama) {
         if (lama > 3) {
             DialogUI dialogUI = new DialogUI("Lama peminjaman melebihi batas maksimal (3 hari)");
@@ -101,17 +131,15 @@ public class FormPeminjaman extends javax.swing.JFrame{
         }
     }
 
-    // TODO: 21/09/2022 implement and test this method
     public void tampilPinjaman() {
-        Object[] kolom = { "Judul" };
-        DefaultTableModel model = new DefaultTableModel(kolom, 0);
+        Object[] kolom = {"Judul", "Lama Peminjaman"};
+        DefaultTableModel tableModel = new DefaultTableModel(kolom, 0);
 
         for (BukuDipinjam buku : bukuDipinjamCollection) {
             Object[] baris = { buku.judul, buku.lama };
-            model.addRow(baris);
+            tableModel.addRow(baris);
         }
-
-        daftarBuku.setModel(model);
+        daftarPinjaman.setModel(tableModel);
     }
 
     // TODO: 21/09/2022 finish this method
