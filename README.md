@@ -1,6 +1,6 @@
 # IESI-Perpustakaan
 
-repository untuk tugas 1 mata kuliah IES
+repository untuk tugas 1 mata kuliah IESI
 
 ### todo: 
 - [ ] Peminjaman Class
