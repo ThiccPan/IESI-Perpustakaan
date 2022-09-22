@@ -123,8 +123,13 @@ public class FormPeminjaman extends javax.swing.JFrame{
         daftarPinjaman.setModel(tableModel);
     }
 
-    // TODO: 21/09/2022 finish this method
+    // TODO: 22/09/2022 implement this method
     public void hapusBuku(Buku buku) {
-
+        for (BukuDipinjam bukuDipinjam:bukuDipinjamCollection) {
+            if (Objects.equals(buku.judul, bukuDipinjam.judul)) {
+                bukuDipinjamCollection.remove(bukuDipinjam);
+                break;
+            }
+        }
     }
 }
