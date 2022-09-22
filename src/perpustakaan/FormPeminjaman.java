@@ -26,9 +26,12 @@ public class FormPeminjaman extends javax.swing.JFrame{
     public FormPeminjaman() {
         bukuDipinjamCollection = new ArrayList<>();
 
-        daftarBuku.setCellSelectionEnabled(true);
-        ListSelectionModel modelBukuTerpilih = daftarBuku.getSelectionModel();
-        modelBukuTerpilih.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //setting selection table daftarBuku
+        daftarBuku.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        //
+        daftarPinjaman.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
         cariButton.addActionListener(new ActionListener() {
             @Override
@@ -67,6 +70,20 @@ public class FormPeminjaman extends javax.swing.JFrame{
 
                 //tambahkan ke daftarBukuTerpinjam
                 tampilPinjaman();
+            }
+        });
+        batalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //ambil value buku yang akan dibatalkan
+
+
+                //hapus buku dari daftar terpinjam
+
+
+                //tampilkan
+
+
             }
         });
     }
