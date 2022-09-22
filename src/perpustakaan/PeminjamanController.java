@@ -28,7 +28,14 @@ public class PeminjamanController {
         }
     }
 
-    public void pinjam(ArrayList<Buku> BukuDipinjam) {
-
+    public void pinjam(ArrayList<BukuDipinjam> bukuDipinjam) {
+        boolean statusPinjam = PeminjamanManager.save(bukuDipinjam);
+        DialogUI dialogUI = new DialogUI("Peminjaman gagal dikonfirmasi, silahkan hubungi admin");
+        if (statusPinjam) {
+            dialogUI.setMessage("Peminjaman telah dikonfirmasi!");
+        }
+        dialogUI.pack();
+        dialogUI.setLocationRelativeTo(null);
+        dialogUI.setVisible(true);
     }
 }
