@@ -8,6 +8,7 @@ import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class FormPeminjaman extends javax.swing.JFrame{
@@ -29,8 +30,8 @@ public class FormPeminjaman extends javax.swing.JFrame{
         //setting selection table daftarBuku
         daftarBuku.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        //
-        daftarPinjaman.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //setting selection table daftarPinjaman
+        daftarPinjaman.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
 
         cariButton.addActionListener(new ActionListener() {
@@ -76,7 +77,8 @@ public class FormPeminjaman extends javax.swing.JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ambil value buku yang akan dibatalkan
-
+                System.out.println(Arrays.toString(daftarPinjaman.getSelectedRows()));
+                System.out.println(Arrays.toString(daftarPinjaman.getSelectedColumns()));
 
                 //hapus buku dari daftar terpinjam
 
