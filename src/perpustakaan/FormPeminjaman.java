@@ -77,14 +77,37 @@ public class FormPeminjaman extends javax.swing.JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ambil value buku yang akan dibatalkan
-                System.out.println(Arrays.toString(daftarPinjaman.getSelectedRows()));
-                System.out.println(Arrays.toString(daftarPinjaman.getSelectedColumns()));
+                int rowBukuBatal = daftarPinjaman.getSelectedRow();
+                int colBukuBatal = daftarPinjaman.getSelectedColumn();
+                Buku bukuBatal = null;
+
+                try {
+                    String judulBukuBatal = (String) daftarPinjaman.getValueAt(rowBukuBatal,colBukuBatal);
+                    for (Buku bukuAkanBatal:bukuTersediaCollection) {
+                        if (Objects.equals(bukuAkanBatal.judul, judulBukuBatal)) {
+                            bukuBatal = bukuAkanBatal;
+                            break;
+                        }
+                    }
+                } catch (ClassCastException ce) {
+                    DialogUI dialogUI = new DialogUI("Gagal, pastikan anda memilih data judul buku!");
+                    dialogUI.pack();
+                    dialogUI.setLocationRelativeTo(null);
+                    dialogUI.setVisible(true);
+                }
 
                 //hapus buku dari daftar terpinjam
-
+                try {
+                    hapusBuku(bukuBatal);
+                } catch (NullPointerException ne) {
+                    DialogUI dialogUI = new DialogUI("Buku tidak ada di daftar terpinjam");
+                    dialogUI.pack();
+                    dialogUI.setLocationRelativeTo(null);
+                    dialogUI.setVisible(true);
+                }
 
                 //tampilkan
-
+                tampilPinjaman();
 
             }
         });
@@ -142,7 +165,6 @@ public class FormPeminjaman extends javax.swing.JFrame{
         daftarPinjaman.setModel(tableModel);
     }
 
-    // TODO: 22/09/2022 implement this method
     public void hapusBuku(Buku buku) {
         for (BukuDipinjam bukuDipinjam:bukuDipinjamCollection) {
             if (Objects.equals(buku.judul, bukuDipinjam.judul)) {
